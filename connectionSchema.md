@@ -129,6 +129,102 @@
   /deviceId/c/controlId
   ---> 
   
+---------------- UP is deprecated ----------------------
+0.0.1
+
+#One way data flow salak device
+This is consept from vueJS and modern frontEnd framework to make code smothe, sexy and readable.
+In every salak device will be 2 action, control and just event.
+
+
+#Control and Event
+What is about control ?
+Contol is data come in to node device and it must give respond to controlling source.
+Control is flow data from broker to node device and give respond to broker.
+
+What is about event ?
+Event is just flow data from node device to broker not to phone1 if phone is subscribe too, it will receive it.
+
+<!-- Income is data from broker to salak device and outcome is data from salak device to broker. -->
+
+
+#Rooting an topic
+For first, every salak device connected device must subscribe request for every topic related with manifest description.
+1. Control
+   /deviceId/c/controlId
+2. Event
+   /deviceId/e/eventId
+
+
+
+
+#Manifest Description (Device Id is esp8266)
+Manifest description is a text JSON who save in every SalakDevice. This have function to describe behavior and what can i controtl to this salak device.
+This is stucture of salak ManifestDescription.
+
+{
+      "project_name": "Select LED",
+      "description": "description of this device",
+      "version":1
+      "controls":[
+            {
+                  "id":0,
+                  "type": "state",
+                  "description":"",
+                  "states":[
+                        {
+                            "name": "red",
+                            "id": 0,
+                            "description": "to select red LED"
+                        },
+                        {
+                            "name": "gree",
+                            "id": 1,
+                            "description": "to select green LED"
+                        },
+                        {
+                            "name": "blue",
+                            "id": 2,
+                            "description": "to select blue LED"
+                        }
+                  ],
+                  "return": [
+                        {
+                            "name": "error LED",
+                            "id": 0,
+                            "description": "LED can't change"
+                        },
+                        {
+                            "name": "Success change LED",
+                            "id": 1,
+                            "description": "success"
+                        }
+                    ]
+            }
+      ],
+      "events":[
+            {
+                  "name":"termometer",
+                  "id":0,
+                  "description":"description",
+                  "data_type":"float"
+            }
+      ]
+}
+
+
+
+#What is relation with topic ?
+1. this device just subcribe all controls (Income data)
+a. /esp8266/c/0
+
+
+
+
+
+
+
+
   
   
   Example
@@ -152,17 +248,17 @@
      [Salak request] QoS0 noRetain-->              <--[Salak ACK] QoS1 Retain              <--[Salak ACK] QoS1 Retain           
      /esp8266/c/0                                  /phone1/c/i/0                           /phone1/c/i/0                         
      {                                             {                                       {
-      "f" : "phone1",                               "f" : "broker",                         "f" : "esp8266",                     
-      "i" : "aaba",                                 "i" : "aaba"                            "i" : "aaba"
-      "v" : 1                                      }                                       }
+      "from"  : "phone1",                           "from" : "broker",                      "from" : "esp8266",     
+      "id"    : "aaba",                             "id"   : "aaba"                         "id"   : "aaba"
+      "value" : 1                                  }                                       }
      }                                                                                    
   
                                                                                            <--[Salak Respond] QoS1 Retain
                                                                                            /phone1/c/0                         
                                                                                            {
-                                                                                             "f" : "phone1",
-                                                                                             "i" : "aaba",
-                                                                                             "v" :  20 
+                                                                                             "from"  : "phone1",
+                                                                                             "id"    : "aaba",
+                                                                                             "value" :  20 
                                                                                            }
        
   
